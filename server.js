@@ -41,6 +41,13 @@ const productApp = require("./APIS/productApi");
 app.use("/user-api", userApp);
 app.use("/product-api", productApp);
 
+
+//dealing with page refresh
+app.use('*',(request,response)=>{
+  response.sendFile(path.join(__dirname,'./build/index.html'))
+})
+
+
 //handling invalid paths
 app.use((request, response, next) => {
   response.send({ message: `path ${request.url} is invalid` });

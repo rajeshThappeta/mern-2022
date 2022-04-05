@@ -1,21 +1,44 @@
 import "./App.css";
-import { FcApproval } from "react-icons/fc";
-import { MdBookmarks } from "react-icons/md";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Contactus from "./components/Contactus";
 
 function App() {
   return (
     <div>
-      <h1 className="text-center text-info">
-        <MdBookmarks className="text-warning" /> Welcome to React <FcApproval />
-        <p className="lead">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi nisi
-          consectetur, velit perspiciatis doloremque omnis quae obcaecati dolore
-          expedita, natus corporis quibusdam officiis reiciendis soluta numquam
-          ipsum dolor, debitis quidem pariatur voluptas. Hic, debitis neque
-          eaque recusandae quae illo corrupti repellat quo, alias tenetur
-          corporis omnis veniam nemo facere voluptatum?
-        </p>
-      </h1>
+      <Navbar bg="dark">
+        <Container>
+          <Navbar.Brand href="#home">MyApp</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <NavLink className="nav-link" to="/">
+              Home
+            </NavLink>
+
+            <NavLink className="nav-link" to="/signup">
+              Signup
+            </NavLink>
+
+            <NavLink className="nav-link" to="/login">
+              Login
+            </NavLink>
+
+            <NavLink className="nav-link" to="/contactus">
+              ContactUs
+            </NavLink>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/contactus" element={<Contactus />} />
+      </Routes>
     </div>
   );
 }
