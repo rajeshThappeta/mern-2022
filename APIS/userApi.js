@@ -60,7 +60,7 @@ userApp.post(
         //create token
         let token=jwt.sign({username:userOfDB.username},process.env.SECRET_KEY,{expiresIn:60})
         //send token
-        response.send({message:"login success",payload:token,userObj:userOfDB})
+        response.send({message:"success",payload:token,userObj:userOfDB})
       }
     }
   })

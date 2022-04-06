@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Container } from "react-bootstrap";
 import { MdLogin } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -33,9 +33,11 @@ function Signup() {
   };
 
   return (
-    <>
+    <Container>
       <div className="display-2 text-center text-info">Signup</div>
-      <Form className="w-50 mx-auto" onSubmit={handleSubmit(onFormSubmit)}>
+      <div className="row  ">
+        <div className="col-12 col-sm-8 col-md-6  mx-auto">
+      <Form onSubmit={handleSubmit(onFormSubmit)}>
         {/* username */}
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
@@ -92,7 +94,9 @@ function Signup() {
           Signup <MdLogin />
         </Button>
       </Form>
-    </>
+      </div>
+      </div>
+    </Container>
   );
 }
 
