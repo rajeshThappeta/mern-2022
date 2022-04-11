@@ -7,8 +7,32 @@ import Home from "../Home";
 import Signup from "../Signup";
 import Login from "../Login";
 import Contactus from "../Contactus";
+import { useSelector } from "react-redux";
+import { clearLoginStatus } from "../../slices/userSlice";
+import { useDispatch } from "react-redux";
+import Userdashboard from "../userdashboard/Userdashboard";
+import {useNavigate} from 'react-router-dom'
 
 function Header() {
+
+  //get state from store
+  let { userObj, isError, isLoading, isSuccess, errMsg } = useSelector(
+    (state) => state.user
+  );
+  //get dispathc function
+  let dispath=useDispatch()
+
+  //get navigate function
+  let navigate=useNavigate()
+
+  //logout user
+  const userLogout=()=>{
+    localStorage.clear()
+    dispath(clearLoginStatus());
+    navigate('/login')
+
+  }
+
   return (
     <div>
       <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
@@ -17,41 +41,49 @@ function Header() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Item>
-                <Nav.Link eventKey="1" as={NavLink} to="/">
-                  Home
-                </Nav.Link>
-              </Nav.Item>
+              {isSuccess!==true ? (
+               
+                <>
+                 {/* These links can be visible when no user logged in */}
+                  <Nav.Item>
+                    <Nav.Link eventKey="1" as={NavLink} to="/">
+                      Home
+                    </Nav.Link>
+                  </Nav.Item>
 
-              <Nav.Item>
-                <Nav.Link eventKey="2" as={NavLink} to="/signup">
-                  Signup
-                </Nav.Link>
-              </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="2" as={NavLink} to="/signup">
+                      Signup
+                    </Nav.Link>
+                  </Nav.Item>
 
-              <Nav.Item>
-                <Nav.Link eventKey="3" as={NavLink} to="/login">
-                  Login
-                </Nav.Link>
-              </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="3" as={NavLink} to="/login">
+                      Login
+                    </Nav.Link>
+                  </Nav.Item>
 
-              <Nav.Item>
-                <Nav.Link eventKey="4" as={NavLink} to="/contactus">
-                  ContactUs
-                </Nav.Link>
-              </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="4" as={NavLink} to="/contactus">
+                      ContactUs
+                    </Nav.Link>
+                  </Nav.Item>
+                </>
+              ) : (
+                <>
+                {/* This dropdown is visible only when a user is logged in */}
+                  <NavDropdown title={userObj.username} id="collasible-nav-dropdown" id="drop-down">
+                    <NavDropdown.Item >
+                      Change password
+                    </NavDropdown.Item>
 
-              {/* dropdown should appear after user login */}
-              <div className="d-none">
-                <NavDropdown title="User" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">
-                    Change password
-                  </NavDropdown.Item>
-
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
-                </NavDropdown>
-              </div>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item  onClick={userLogout}>
+                      Logout
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -61,6 +93,7 @@ function Header() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/contactus" element={<Contactus />} />
+        <Route path="/userdashboard" element={<Userdashboard />} />
       </Routes>
     </div>
   );

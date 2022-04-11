@@ -1,24 +1,44 @@
-import React from "react";
+import {useEffect} from "react";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 import loginImg from "../images/login.svg";
 import {useSelector,useDispatch} from 'react-redux';
-import {userLogin} from '../slices/userSlice'
+import {userLogin} from '../slices/userSlice';
+
+import {useNavigate} from 'react-router-dom'
 
 function Login() {
+
+ 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+   //get user state from redux
+  let {userObj,isError,isLoading,isSuccess,errMsg}=useSelector(state=>state.user);
 
-  let {userObj,isError,isLoading,isSuccess,errMsg}=useSelector(state=>state.user)
-  let dispath=useDispatch();
+  //get dispathc function to call action creator functions
+  let dispatch=useDispatch();
 
+  //get navigate functon to navigate programatically
+  let navigate=useNavigate()
+
+  //when login form is submitted
   const onFormSubmit = (userCredentialsObject) => {
-    dispath(userLogin(userCredentialsObject))
+    dispatch(userLogin(userCredentialsObject))
   };
+
+  //this to be executed when either isSuccess or isError changed
+  useEffect(() => {
+    if (isSuccess) {
+   
+      navigate('/userdashboard');
+    }
+  
+  }, [isSuccess,isError]);
+
 
   return (
     <div className="container">
