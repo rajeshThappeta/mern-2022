@@ -7,31 +7,32 @@ import Home from "../Home";
 import Signup from "../Signup";
 import Login from "../Login";
 import Contactus from "../Contactus";
+import Userprofile from "../user-profile/Userprofile";
+import Cart from "../cart/Cart";
+import Products from "../view-products/ViewProducts";
 import { useSelector } from "react-redux";
 import { clearLoginStatus } from "../../slices/userSlice";
 import { useDispatch } from "react-redux";
 import Userdashboard from "../userdashboard/Userdashboard";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate ,Navigate} from "react-router-dom";
 
 function Header() {
-
   //get state from store
   let { userObj, isError, isLoading, isSuccess, errMsg } = useSelector(
     (state) => state.user
   );
   //get dispathc function
-  let dispath=useDispatch()
+  let dispath = useDispatch();
 
   //get navigate function
-  let navigate=useNavigate()
+  let navigate = useNavigate();
 
   //logout user
-  const userLogout=()=>{
-    localStorage.clear()
+  const userLogout = () => {
+    localStorage.clear();
     dispath(clearLoginStatus());
-    navigate('/login')
-
-  }
+    navigate("/login");
+  };
 
   return (
     <div>
@@ -41,10 +42,9 @@ function Header() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ms-auto">
-              {isSuccess!==true ? (
-               
+              {isSuccess !== true ? (
                 <>
-                 {/* These links can be visible when no user logged in */}
+                  {/* These links can be visible when no user logged in */}
                   <Nav.Item>
                     <Nav.Link eventKey="1" as={NavLink} to="/">
                       Home
@@ -71,14 +71,16 @@ function Header() {
                 </>
               ) : (
                 <>
-                {/* This dropdown is visible only when a user is logged in */}
-                  <NavDropdown title={userObj.username} id="collasible-nav-dropdown" id="drop-down">
-                    <NavDropdown.Item >
-                      Change password
-                    </NavDropdown.Item>
+                  {/* This dropdown is visible only when a user is logged in */}
+                  <NavDropdown
+                    title={userObj.username}
+                    id="collasible-nav-dropdown"
+                    id="drop-down"
+                  >
+                    <NavDropdown.Item>Change password</NavDropdown.Item>
 
                     <NavDropdown.Divider />
-                    <NavDropdown.Item  onClick={userLogout}>
+                    <NavDropdown.Item onClick={userLogout}>
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
@@ -93,7 +95,13 @@ function Header() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/contactus" element={<Contactus />} />
-        <Route path="/userdashboard" element={<Userdashboard />} />
+        <Route path="/userdashboard" element={<Userdashboard />}>
+          <Route path="profile" element={<Userprofile />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="products" element={<Products />} />
+          {/* Navigating to profile when child path is empty */}
+          <Route path="" element={<Navigate to="profile" replace={true} />} />
+        </Route>
       </Routes>
     </div>
   );

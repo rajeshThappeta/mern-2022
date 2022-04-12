@@ -7,6 +7,7 @@ const bcryptjs = require("bcryptjs");
 //import jsonwebtoken to create token
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const verifyToken=require('./middlewares/verifyToken')
 
 var cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -42,7 +43,7 @@ userApp.use(exp.urlencoded());
 
 //create route to handle '/getusers' path
 userApp.get(
-  "/getusers",
+  "/getusers",verifyToken,
   expressAsyncHandler(async (request, response) => {
     //get userCollectionObject
     let userCollectionObject = request.app.get("userCollectionObject");
@@ -86,7 +87,7 @@ userApp.post(
         let token = jwt.sign(
           { username: userOfDB.username },
           process.env.SECRET_KEY,
-          { expiresIn: 60 }
+          { expiresIn: 10 }
         );
         //send token
         response.send({
@@ -137,6 +138,12 @@ userApp.post(
       }
   })
 );
+
+
+//private route for testing
+userApp.get('/test',verifyToken,(request,response)=>{
+  response.send({message:"This reply is from private route"})
+})
 
 //create a route to modify user data
 

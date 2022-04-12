@@ -1,0 +1,17 @@
+.active{
+  background-color: rgb(65, 150, 189);
+  color:white;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: 3px;
+}
+
+a{
+  color:aliceblue;
+  text-decoration: none;
+}
+
+a:hover{
+  color:aliceblue;
+}
